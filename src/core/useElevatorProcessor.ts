@@ -41,8 +41,14 @@ export function useElevatorProcessor() {
 
     await moveElevator(elevator, targetFloor, (updated) => {
       dispatch({
-        type: "UPDATE_ELEVATOR",
-        payload: updated,
+        type: 'UPDATE_ELEVATOR_STATE',
+        payload: {
+          id: elevator.id,
+          currentFloor: updated.currentFloor,
+          isMoving: updated.isMoving,
+          door: updated.door,
+          direction: updated.direction,
+        },
       });
     });
 

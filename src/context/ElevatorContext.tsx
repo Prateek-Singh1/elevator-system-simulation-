@@ -11,7 +11,10 @@ type Action =
     | { type: 'UPDATE_ELEVATOR'; payload: Elevator }
     | { type: 'REMOVE_STOP'; payload: { elevatorId: string; floor: number } }
     | { type: 'CLEAR_REQUEST'; payload: number }
-    | { type: 'SET_MAINTENANCE'; payload: { elevatorId: string; active: boolean } };
+    | { type: 'SET_MAINTENANCE'; payload: { elevatorId: string; active: boolean } }
+    | { type: 'CLEAR_REQUEST'; payload: number }
+    | { type: 'ADD_STOP'; payload: { elevatorId: string; floor: number } }
+    | { type: 'UPDATE_ELEVATOR_STATE'; payload: Partial<Elevator> & { id: string } };
 
 
 const initialState: State = {
@@ -48,26 +51,32 @@ function reducer(state: State, action: Action): State {
             return {
                 ...state,
                 elevators: state.elevators.map((e) =>
-                    e.id === action.payload.id ? action.payload : e
-                ),
-            };
-
-        case 'REMOVE_STOP':
-            return {
-                ...state,
-                elevators: state.elevators.map((e) =>
-                    e.id === action.payload.elevatorId
-                        ? {
-                            ...e,
-                            queue: e.queue.filter(
-                                (f) => f !== action.payload.floor
-                            ),
-                            direction:
-                                e.queue.length > 1 ? e.direction : 'IDLE',
-                        }
+                    e.id === action.payload.id
+                        ? { ...e, ...action.payload }
                         : e
                 ),
             };
+
+
+        case 'REMOVE_STOP': {
+            return {
+                ...state,
+                elevators: state.elevators.map((e) => {
+                    if (e.id !== action.payload.elevatorId) return e;
+
+                    const newQueue = e.queue.filter(
+                        (f) => f !== action.payload.floor
+                    );
+
+                    return {
+                        ...e,
+                        queue: newQueue,
+                        direction: newQueue.length > 0 ? e.direction : 'IDLE',
+                    };
+                }),
+            };
+        }
+
 
         case 'CLEAR_REQUEST':
             return {
@@ -76,6 +85,33 @@ function reducer(state: State, action: Action): State {
                     (r) => r.floor !== action.payload
                 ),
             };
+
+        case 'ADD_STOP': {
+            return {
+                ...state,
+                elevators: state.elevators.map((e) =>
+                    e.id === action.payload.elevatorId
+                        ? {
+                            ...e,
+                            queue: e.queue.includes(action.payload.floor)
+                                ? e.queue
+                                : [...e.queue, action.payload.floor],
+                        }
+                        : e
+                ),
+            };
+        }
+
+        case 'UPDATE_ELEVATOR_STATE': {
+            return {
+                ...state,
+                elevators: state.elevators.map((e) =>
+                    e.id === action.payload.id
+                        ? { ...e, ...action.payload }
+                        : e
+                ),
+            };
+        }
 
         default:
             return state;

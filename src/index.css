@@ -1,0 +1,164 @@
+.building {
+  display: flex;
+  gap: 40px;
+}
+
+.floors {
+  display: flex;
+  flex-direction: column;
+}
+
+.floor {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shaft {
+  position: relative;
+  width: 80px;
+  height: 480px;
+  border: 2px solid #333;
+}
+
+.elevator {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  background: #ddd;
+  transition: transform 2s linear;
+}
+
+.display {
+  text-align: center;
+  font-weight: bold;
+}
+
+.doors {
+  height: 100%;
+}
+
+.elevator {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  background: #e5e7eb;
+  transition: transform 2s linear;
+  overflow: hidden;
+  border: 1px solid #999;
+}
+
+.doors {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.doors::before,
+.doors::after {
+  content: '';
+  width: 50%;
+  background: #9ca3af;
+  transition: transform 1.5s ease-in-out;
+}
+
+/* Door states */
+.doors.open::before {
+  transform: translateX(-100%);
+}
+
+.doors.open::after {
+  transform: translateX(100%);
+}
+
+.doors.closed::before,
+.doors.closed::after {
+  transform: translateX(0);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.shaft-label {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.building {
+  display: flex;
+  gap: 40px;
+}
+
+.elevators {
+  display: flex;
+  gap: 40px;
+}
+.elevator-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shaft-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.shaft {
+  position: relative;
+  width: 80px;
+  height: 480px;
+  border: 2px solid #333;
+  background: repeating-linear-gradient(
+    to bottom,
+    #fff,
+    #fff 78px,
+    #e5e7eb 80px
+  );
+}
+.floor {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.elevator {
+  background: #9ca3af;
+}
+
+.elevator.stopped {
+  background: #6b7280;
+}
+
+.doors {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+.doors::before,
+.doors::after {
+  content: '';
+  width: 50%;
+  background: #6b7280;
+  transition: transform 1.5s ease-in-out;
+}
+
+/* CLOSED state */
+.doors.closed::before {
+  transform: translateX(0);
+}
+.doors.closed::after {
+  transform: translateX(0);
+}
+
+/* OPEN state */
+.doors.open::before {
+  transform: translateX(-100%);
+}
+.doors.open::after {
+  transform: translateX(100%);
+}

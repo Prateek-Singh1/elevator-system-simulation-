@@ -29,7 +29,7 @@ export function Floor({ floor }: Props) {
     if (!assignedElevatorId) return;
 
     const elevator = state.elevators.find(
-      (e) => e.id === assignedElevatorId
+      (e: Props) => e.id === assignedElevatorId
     );
     if (!elevator) return;
 

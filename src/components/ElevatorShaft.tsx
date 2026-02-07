@@ -15,13 +15,7 @@ export function ElevatorShaft({ elevatorId }: Props) {
     if (!elevator) return null;
 
     const translateY = (5 - elevator.currentFloor) * 80;
-    const isStopped = !elevator.isMoving;
-
-    const doorClass =
-        isStopped &&
-            (elevator.door === 'OPEN')
-            ? 'open'
-            : 'closed';
+    const doorClass = elevator.door === 'OPEN' ? 'open' : 'closed';
 
     return (
         <div className="elevator-column">

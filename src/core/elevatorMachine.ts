@@ -11,10 +11,6 @@ export async function moveElevator(
 ) {
   //already at floor
   if (elevator.currentFloor === targetFloor) {
-    await openDoors(
-      { ...elevator, isMoving: false, door: 'CLOSED' },
-      update
-    );
     return;
   }
 
